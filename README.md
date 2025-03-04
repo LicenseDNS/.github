@@ -1,2 +1,2 @@
-# .github
+# LicenseDNS
 Software Licensing over DNSSEC
