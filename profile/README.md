@@ -8,3 +8,5 @@ Instead of embedding complicated cryptographic algorithms in your application, y
 LicenseDNS is a powerful solution that enables software vendors to implement secure licensing mechanisms using DNSSEC (Domain Name System Security Extensions). By leveraging this technology, developers can validate licenses effortlessly. To check a license's authenticity, simply send a DNS query to any DNS server, and you will receive license data that has been cryptographically verified for integrity and security. This system is designed to be versatile, supporting all platforms and programming languages, ensuring that vendors can easily integrate it into their existing software solutions.
 
 [LicenseDNS.net](https://www.LicenseDNS.net/)
+
+[LicenseDNS.github.io](https://LicenseDNS.github.io/)
