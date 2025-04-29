@@ -1,5 +1,5 @@
 
-# Software Licensing over DNSSEC
+# DNS Based Software Licensing Secured with DNSSEC
 
 [LicenseDNS](https://www.LicenseDNS.net/) transforms the way you verify licenses within your software product, streamlining what can often be a complex and tedious process. Traditionally, verifying licenses has required intricate cryptographic methods that often present challenges in implementation and maintenance. However, with LicenseDNS, you can simplify this task significantly by utilizing the robust capabilities of DNS servers. 
 
