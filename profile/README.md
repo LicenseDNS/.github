@@ -10,5 +10,3 @@ LicenseDNS is a powerful solution that enables software vendors to implement [se
 All programming languages and operating systems, including Android and iOS, are covered. Different programming languages have libraries and functions that make it easier to send queries to Domain Name System (DNS) servers. You can also use some OS commands to send DNS queries, which helps with activating and checking licenses.
 
 [LicenseDNS.net](https://www.LicenseDNS.net/)
-
-[LicenseDNS.github.io](https://LicenseDNS.github.io/)
