@@ -75,4 +75,54 @@ The core of LicenseDNS's security lies in its utilization of DNSSEC (Domain Name
 
 **In conclusion, LicenseDNS presents a compelling alternative to traditional software licensing mechanisms by cleverly harnessing the power and security of the DNS infrastructure. Its simplicity, reliance on established protocols, and broad compatibility make it an attractive option for software vendors looking to streamline their license verification process while maintaining a high level of security and integrity.**
 
+# Working Principle
+
+LicenseDNS operates through a dedicated and customized DNS server that efficiently manages the activation and deactivation processes of software licenses in response to specific DNS queries. The workflow begins when a license is generated via the license manager, at which point it is securely stored in a centralized database.
+
+When a DNS query is received pertaining to the activation or deactivation of a particular license key, the server first performs a comprehensive validation check to ascertain the legitimacy and status of the license. This involves cross-referencing the incoming query with the existing records in the database.
+
+Once validated, the server creates the necessary records that detail either the activation or deactivation process. These records are then digitally signed (DNSSEC) to ensure their integrity and authenticity. Finally, the signed records are returned to the user, confirming the successful activation or deactivation of the requested license key. This systematic approach ensures that all license transactions are handled securely and efficiently, providing users with a seamless experience.
+
+A DNS server processes and responds to DNS queries exclusively when the DNSSEC (Domain Name System Security Extensions) flag is enabled. This mechanism is designed to ensure that only securely signed DNS records are returned to the user, providing an additional layer of security against threats such as spoofing or cache poisoning. By verifying the authenticity and integrity of the DNS data through cryptographic signatures, DNSSEC helps to assure users that the responses they receive are legitimate and have not been tampered with during transit.
+
+The DNS server necessitates a specific format for domain names to effectively process activation and deactivation requests. This format ensures that the server can correctly interpret and manage the commands associated with these requests.
+
+The licensing root domain name is established as q.LicenseDNS.net. It is essential that there are exactly three labels (subdomains) preceding this root domain.
+
+1.  **Request Command:** The first label signifies the request command, which can either be "activate" or "deactivate." For simplification, only the first letters of these commands are utilized—'a' for activate and 'd' for deactivate.
+2.  **Hash Value:** The second label consists of the first 32 characters of a hash value generated from the concatenation of the license key and the product ID. This hashing process is crucial as it helps protect the confidentiality of the license key, ensuring that sensitive information is not exposed or easily decipherable.
+3.  **Device or User Fingerprint:** The final label is used to bind the license to a specific device or user and can be any string with a length ranging from 1 to a maximum of 32 characters. This fingerprint serves to uniquely identify the device or user associated with the license, reinforcing the security and integrity of the licensing process.
+
+As an example, to activate the license key _12345-12345-12345-12345_ for the product ID _ADA14AE9-08A8-4AE2-B69E-AAE277B8346F_ on a device with a specific generated fingerprint or device ID labeled as _sample-fingerprint_, please follow the detailed steps outlined below.
+
+1.  **Label Assignment for Activation:** The first label you will need to use for activation is designated as 'a.' This label will serve as the primary identifier in the activation process.
+2.  **Generating the Hash Value:** To generate the necessary hash value for the activation, you can refer to the sample Java code provided. `DigestUtils.sha256Hex(licenseKey + productId).substring(0, 32);`_ This code performs the following actions:
+    1.  It concatenates the license key and the product ID.
+    2.  It computes the SHA-256 hash of the concatenated string.
+    3.  Finally, it extracts the first 32 characters from the resulting hash. The resulting string will be 7F3735C907D319640373EFA17E196059 when run.
+3.  **Formulating the Domain for DNS Queries:** Once you have obtained the hash value from the previous step, the next task is to formulate the domain to which you will send the query. The resulting domain will be structured as follows: `a.7F3735C907D319640373EFA17E196059.example-fingerprint.q.LicenseDNS.net`
+4.  **Sending the DNS Query:** You can send the DNS query using various methods depending on your application needs:
+    1.  **Programmatically:** You can use different programming languages and libraries to perform DNS queries.
+    2.  **Operating System Commands:** If you're using a Linux system, you can utilize command-line tools like _delv_ or _dig_.
+    3.  **DNS-over-HTTPS (DoH):** For enhanced privacy and security, you can send a DoH request to public DNS servers like Google (https://dns.google) or Cloudflare (https://1.1.1.1).
+5.  **Getting the Result:** If the license key is valid and activation allowed, the following example result will occur. Those TXT values can be used in any way to implement licensing.
+
+  <pre>$ delv a.7F3735C907D319640373EFA17E196059.example- fingerprint.q.licensedns.net -t txt +short +trust
+	; fully validated
+	"anything"
+	"result=success"
+	"company=Acme Co."
+	"fullname=John Doe"
+	"email=john@acme.com"
+	"some-key=some-value"
+	"feature1=some-value1"
+	"feature2=some-value2"
+	"epochtime=1742590074543"
+	"datetime=2025-03-21 20:47:54"</pre>
+
+Certain TXT records are consistently populated with specific information that is crucial for understanding the context. Among these, the "result" record provides the outcome of a particular operation, while the "epochtime" record captures the time in epoch format, which is essential for time-stamping purposes. Additionally, the "datetime" record presents a human-readable date and time, offering clarity on when the data was generated.
+
+On the other hand, user-specific details such as "fullname," "email," and "company" are included only if they have been specified during the license generation process in the license management system. This means that these details will not appear in the TXT records unless the user has intentionally provided them at the time of license creation, allowing for a more tailored and personalized licensing experience.
+
+
 [LicenseDNS.net](https://www.LicenseDNS.net/)
